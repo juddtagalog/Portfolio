@@ -79,7 +79,7 @@ export const MainContent: React.FC<MainContentProps> = ({
               <p className="text-neutral-400 mt-1">{owner.role}</p>
             </div>
             <a
-              href="/resume.pdf"
+              href="/Portfolio/assets/JUDD_NALLOS_TAGALOG_Resume.pdf"
               download
               className="bg-[#1db954] hover:bg-[#1ed760] text-black font-bold px-6 py-3 rounded-full transition-all hover:scale-105"
             >

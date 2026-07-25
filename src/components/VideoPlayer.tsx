@@ -21,17 +21,18 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onEnded
 }) => {
   return (
-    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl border border-neutral-800">
+    <div className="relative w-full max-h-[80vh] flex items-center justify-center bg-black rounded-lg overflow-hidden shadow-2xl border border-neutral-800">
       <video
         ref={videoRef}
         src={project.videoUrl}
-        className="w-full h-full object-cover"
+        poster={project.thumbnail}
+        className="w-auto h-auto max-w-full max-h-[80vh] object-contain"
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
         onEnded={onEnded}
         playsInline
       />
-      
+
       {!isPlaying && (
         <div className="absolute inset-0 z-10 group cursor-pointer bg-black/40" onClick={onTogglePlay}>
           <img

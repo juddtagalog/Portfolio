@@ -5,7 +5,7 @@ import { VideoPlayer } from './VideoPlayer';
 interface RightPanelProps {
   project: Project;
   isPlaying: boolean;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   onTogglePlay: () => void;
   onTimeUpdate: () => void;
   onLoadedMetadata: () => void;

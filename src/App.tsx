@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { MainContent } from './components/MainContent';
 import { RightPanel } from './components/RightPanel';
 import { Footer } from './components/Footer';
+import { MobilePlayerModal } from './components/MobilePlayerModal';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('Home');
@@ -14,8 +15,11 @@ export const App: React.FC = () => {
   const [duration, setDuration] = useState<number>(selectedProject.durationSeconds);
   const [volume, setVolume] = useState<number>(80);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  
+  // State for opening the Spotify magnified view on mobile
+  const [isMobilePlayerOpen, setIsMobilePlayerOpen] = useState<boolean>(false);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handleSelectProject = (project: Project) => {
     if (selectedProject.id === project.id) {
@@ -32,6 +36,10 @@ export const App: React.FC = () => {
         }
       }, 50);
     }
+    // Automatically magnify the player when tapping a project card on mobile devices
+    if (window.innerWidth < 768) {
+      setIsMobilePlayerOpen(true);
+    }
   };
 
   const handleTogglePlay = () => {
@@ -46,13 +54,13 @@ export const App: React.FC = () => {
   };
 
   const handleNextProject = () => {
-    const currentIndex = MOCK_PROJECTS.findIndex((p) => p.id === selectedProject.id);
+    const currentIndex = MOCK_PROJECTS.findIndex((p: Project) => p.id === selectedProject.id);
     const nextIndex = (currentIndex + 1) % MOCK_PROJECTS.length;
     handleSelectProject(MOCK_PROJECTS[nextIndex]);
   };
 
   const handlePrevProject = () => {
-    const currentIndex = MOCK_PROJECTS.findIndex((p) => p.id === selectedProject.id);
+    const currentIndex = MOCK_PROJECTS.findIndex((p: Project) => p.id === selectedProject.id);
     const prevIndex = (currentIndex - 1 + MOCK_PROJECTS.length) % MOCK_PROJECTS.length;
     handleSelectProject(MOCK_PROJECTS[prevIndex]);
   };
@@ -107,15 +115,19 @@ export const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen bg-[#000000] text-white flex flex-col overflow-hidden font-sans">
-      <div className="flex-1 flex overflow-hidden p-2 gap-2">
-        <Sidebar
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          projects={MOCK_PROJECTS}
-          selectedProject={selectedProject}
-          onSelectProject={handleSelectProject}
-          isPlaying={isPlaying}
-        />
+      <div className="flex-1 flex overflow-hidden p-0 md:p-2 gap-2">
+        {/* Hidden on mobile, visible on desktop */}
+        <div className="hidden md:flex h-full">
+          <Sidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            projects={MOCK_PROJECTS}
+            selectedProject={selectedProject}
+            onSelectProject={handleSelectProject}
+            isPlaying={isPlaying}
+          />
+        </div>
+
         <MainContent
           activeTab={activeTab}
           owner={MOCK_OWNER}
@@ -126,28 +138,57 @@ export const App: React.FC = () => {
           onTogglePlay={handleTogglePlay}
           onStartExploring={handleStartExploring}
         />
-        <RightPanel
-          project={selectedProject}
-          isPlaying={isPlaying}
-          videoRef={videoRef}
-          onTogglePlay={handleTogglePlay}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleLoadedMetadata}
-          onEnded={handleVideoEnded}
-        />
+
+        {/* Hidden on mobile, visible on lg desktops */}
+        <div className="hidden lg:flex h-full">
+          <RightPanel
+            project={selectedProject}
+            isPlaying={isPlaying}
+            videoRef={videoRef}
+            onTogglePlay={handleTogglePlay}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleVideoEnded}
+          />
+        </div>
       </div>
+
       <Footer
         project={{ ...selectedProject, durationSeconds: duration }}
         isPlaying={isPlaying}
         currentTime={currentTime}
         volume={volume}
         isMuted={isMuted}
+        activeTab={activeTab}
         onTogglePlay={handleTogglePlay}
         onNext={handleNextProject}
         onPrev={handlePrevProject}
         onSeek={handleSeek}
         onVolumeChange={handleVolumeChange}
         onToggleMute={handleToggleMute}
+        onOpenMobilePlayer={() => setIsMobilePlayerOpen(true)}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          setIsMobilePlayerOpen(false);
+        }}
+      />
+
+      {/* Magnified Project Demo View (Like Spotify Album View) */}
+      <MobilePlayerModal
+        project={selectedProject}
+        isPlaying={isPlaying}
+        isOpen={isMobilePlayerOpen}
+        currentTime={currentTime}
+        duration={duration}
+        videoRef={videoRef}
+        onClose={() => setIsMobilePlayerOpen(false)}
+        onTogglePlay={handleTogglePlay}
+        onNext={handleNextProject}
+        onPrev={handlePrevProject}
+        onSeek={handleSeek}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleVideoEnded}
       />
     </div>
   );

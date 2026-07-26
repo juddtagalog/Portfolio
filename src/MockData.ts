@@ -62,7 +62,7 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'PS2 graphic inspired maze horror survival game. Created monster entities and monster behavior logic alongside a custom monster manager and spawner to allocate threats throughout the maze.',
     techStack: ['GDScript', 'Godot'],
     duration: '0:15',
-    durationSeconds: 15
+    durationSeconds: 69
   },
   {
     id: '2',
@@ -73,7 +73,7 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'A rework of the then Proud Bisaya Bai website. Was part of a team of contractual developers and was responsible for reworking their article creation, to a drag and drop system.',
     techStack: ['Next.js', 'TypeScript', 'React', 'Supabase'],
     duration: '0:45',
-    durationSeconds: 45
+    durationSeconds: 639
   },
   {
     id: '3',
@@ -84,7 +84,7 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'An automation project designed to farm resources in the Lucky Defense game. Contributed to core unit processing algorithms and automated loop sequences in earlier versions.',
     techStack: ['Java', 'ADB', 'Mumu Emulator'],
     duration: '0:15',
-    durationSeconds: 15
+    durationSeconds: 69
   },
   {
     id: '4',
@@ -95,7 +95,7 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'School publication website featuring a dynamic homepage with article fetching algorithms sorted by most visited, latest news, and categorized campus updates.',
     techStack: ['PHP', 'Laravel', 'PostgreSQL', 'Docker'],
     duration: '0:15',
-    durationSeconds: 15
+    durationSeconds: 35
   },
   {
     id: '5',
@@ -106,7 +106,7 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'IoT companion app connecting ESP32 sensors to monitor a plant’s real-time environment. Implemented custom splash screens and plant classification using image recognition via Gemini API.',
     techStack: ['Flutter', 'Firebase', 'ESP32', 'Gemini API'],
     duration: '0:60',
-    durationSeconds: 60
+    durationSeconds: 9
   },
   {
     id: '6',
@@ -117,6 +117,6 @@ export const MOCK_PROJECTS: Project[] = [
     description: 'Internship search platform built for Cebu-based students. Implemented internship postings for companies, resume submission workflows, and application tracking modules.',
     techStack: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker', 'Flutter'],
     duration: '0:45',
-    durationSeconds: 45,
+    durationSeconds: 22,
   }
 ];

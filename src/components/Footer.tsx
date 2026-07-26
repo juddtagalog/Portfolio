@@ -204,7 +204,7 @@ export const Footer: React.FC<FooterProps> = ({
               />
             </div>
 
-            <span className="w-8">{project.duration}</span>
+            <span className="w-8">{formatTime(project.durationSeconds)}</span>
           </div>
         </div>
 

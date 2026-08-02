@@ -33,9 +33,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           />
           <div className="flex flex-col gap-1 md:gap-2">
             <div className="flex items-center gap-2">
-              <span className="bg-[#1db954] text-black text-[10px] md:text-xs font-black px-2.5 py-0.5 md:py-1 rounded-full uppercase tracking-wider">
-                Verified Developer
-              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight">{owner.name}</h1>
             <p className="text-sm md:text-xl text-neutral-300 font-medium">{owner.role}</p>

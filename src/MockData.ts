@@ -11,7 +11,7 @@ export const MOCK_OWNER: OwnerProfile = {
   skills: [
     'Java', 'C++', 'Dart', 'TypeScript', 'GDScript', 'Python', 'PHP', 'C#',
     'Flutter', 'React', 'Next.js', 'Spring Boot', 'Laravel', 'Tailwind CSS',
-    'Supabase', 'PostgreSQL', 'Docker', 'Godot', 'Firebase', 'n8n'
+    'Supabase', 'PostgreSQL', 'Docker', 'Godot', 'n8n'
   ],
   experience: [
     {

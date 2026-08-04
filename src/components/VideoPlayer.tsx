@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { Project } from '../types';
 
 interface VideoPlayerProps {
@@ -20,20 +20,70 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onLoadedMetadata,
   onEnded
 }) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const handleFullscreenChange = useCallback(() => {
+    setIsFullscreen(!!document.fullscreenElement);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, [handleFullscreenChange]);
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await containerRef.current?.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      console.error('Fullscreen error:', error);
+    }
+  };
+
   return (
-    <div className="relative w-full max-h-[80vh] flex items-center justify-center bg-black rounded-lg overflow-hidden shadow-2xl border border-neutral-800">
+    <div 
+      ref={containerRef}
+      className={`relative w-full flex items-center justify-center bg-black rounded-lg overflow-hidden shadow-2xl border border-neutral-800 ${
+        isFullscreen ? 'max-h-none h-screen' : 'max-h-[80vh]'
+      }`}
+    >
       <video
         ref={videoRef}
         src={project.videoUrl}
         poster={project.thumbnail}
-        className="w-auto h-auto max-w-full max-h-[80vh] object-contain"
+        className={`object-contain ${
+          isFullscreen 
+            ? 'w-screen h-screen' 
+            : 'w-auto h-auto max-w-full max-h-[80vh]'
+        }`}
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
         onEnded={onEnded}
         playsInline
       />
+      <button
+        onClick={toggleFullscreen}
+        className="absolute bottom-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 rounded-lg transition-colors"
+        title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+      >
+        {isFullscreen ? (
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        )}
+      </button>
 
-      {!isPlaying && (
+      {!isPlaying && !isFullscreen && (
         <div className="absolute inset-0 z-10 group cursor-pointer bg-black/40" onClick={onTogglePlay}>
           <img
             src={project.thumbnail}
